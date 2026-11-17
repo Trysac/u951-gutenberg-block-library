@@ -1,0 +1,39 @@
+{
+    "name": "trysac/u951-gutenberg-block-library",
+    "description": "Accessible server-rendered Gutenberg blocks with a WordPress block-grammar parser and serializer, attribute validation and markup that passes axe-core with zero violations",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Miguel Gomez"
+        }
+    ],
+    "homepage": "https://github.com/Trysac/u951-gutenberg-block-library",
+    "require": {
+        "php": ">=8.4"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "phpstan/phpstan": "^2.3",
+        "phpstan/phpstan-phpunit": "^2.1",
+        "phpstan/phpstan-strict-rules": "^2.1",
+        "phpunit/phpunit": "^13.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Trysac\\GutenbergBlockLibrary\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Trysac\\GutenbergBlockLibrary\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": false,
+        "platform": {
+            "php": "8.4.1"
+        },
+        "sort-packages": true
+    }
+}
