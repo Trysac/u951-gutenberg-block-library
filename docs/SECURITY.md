@@ -1,27 +1,13 @@
-# Security notes
+# Security and Threat Model
 
-## Threat model
+## Defended Threats
 
-`trysac/u951-gutenberg-block-library` is a pure library without I/O. The main risks are:
+- **Insecure Attributes**: All block attributes are validated against `Registry` schemas. Unexpected keys, incorrect types, or out-of-range integers cause `BlockException` ('invalid_attribute').
+- **XSS**: All dynamic output rendered into HTML text or attribute contexts is escaped via `Html::text()` or `Html::attr()` using `htmlspecialchars` with `ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5`.
+- **Unsafe URLs**: URLs in `trysac/cta-button` and `trysac/figure` are validated. We strip ASCII control characters and reject non-whitelisted schemes (`http`, `https`, `mailto`, relative paths, fragment identifiers). Violations throw `BlockException` ('unsafe_url').
+- **Resource Exhaustion**: `BlockParser::parse` defaults to 1 MiB (`input_too_large`) and 32 levels of nesting (`too_deep`).
+- **Information Exposure**: `BlockException` messages are truncated to 200 characters to prevent log injection or heap exhaustion from massive inputs.
 
-- **Supply chain**: a compromised Composer package, plugin or CI action. Mitigation: standard
-  library only, every package pinned by the committed `composer.lock`, Composer plugins disabled
-  (`allow-plugins: false`), `composer audit` (Packagist security advisories) and OSV-Scanner over
-  `composer.lock` in the gates, Dependabot weekly updates, actions pinned by commit SHA, minimal
-  workflow permissions.
-- **Leaked secrets**: tokens committed by mistake. Mitigation: `gitleaks` runs in the local gates
-  and in CI; `.env` and `auth.json` files are never committed.
-- **Insecure code**: code evaluation, command injection, object injection through
-  `unserialize()`, disabled TLS verification. Mitigation: PHPStan at level max with the strict
-  rules, `declare(strict_types=1)` everywhere, and the factory's Semgrep rules
-  (`.semgrep/factory-rules.yml`, `nosemgrep` ignored); fix the code instead of silencing it.
-- **Untrusted input**: callers may pass hostile strings. Mitigation: validate input and throw
-  explicit, documented exceptions; never `unserialize()` untrusted data; never build a shell
-  command line from data.
+## Not Defended
 
-## Publishing
-
-Releases are git tags; publishing on Packagist needs an account linked to this repository, whose
-credentials are never stored in the repository.
-
-To report a vulnerability, see [SECURITY.md](../SECURITY.md).
+- **Inner HTML**: The library treats `innerHtml` as trusted post content. Malicious markup inside rich-text fields (within allowed blocks) is preserved as stored.

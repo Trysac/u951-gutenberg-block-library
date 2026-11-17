@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace Trysac\GutenbergBlockLibrary;
 
 /**
- * The input is empty or holds only whitespace.
+ * Exception thrown when text normalization receives blank input.
  */
 final class BlankInputException extends \InvalidArgumentException
 {
     /**
-     * Creates the exception, with the message "input is blank" unless another one is given.
-     *
-     * @param string $message the message
-     * @param null|\Throwable $previous the exception that caused this one
+     * Creates a new BlankInputException.
      */
     public function __construct(string $message = 'input is blank', ?\Throwable $previous = null)
     {
