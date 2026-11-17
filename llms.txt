@@ -1,16 +1,10 @@
 # gutenberg-block-library
 
-> Accessible server-rendered Gutenberg blocks with a WordPress block-grammar parser and serializer, attribute validation and markup that passes axe-core with zero violations Composer package `trysac/u951-gutenberg-block-library`, namespace `Trysac\GutenbergBlockLibrary`, MIT
-> licensed, PHP >= 8.4, standard library only.
+Accessible server-rendered Gutenberg blocks with a WordPress block-grammar parser and serializer, attribute validation and markup that passes axe-core with zero violations. Namespace `Trysac\GutenbergBlockLibrary`, PHP 8.4.
 
 ## Docs
 
-- [README](README.md): problem, install, usage example
-- [AGENTS](AGENTS.md): commands, folder map, conventions, limits
-- [Architecture](docs/ARCHITECTURE.md): shape of the library and its public API
-- [Testing](docs/TESTING.md): how to run and extend the tests
-
-## Optional
-
-- [Stack](docs/STACK.md): tools used and discarded
-- [Changelog](CHANGELOG.md): release history
+- [README](README.md): Installation and basic usage.
+- [Architecture](docs/ARCHITECTURE.md): Library design.
+- [Testing](docs/TESTING.md): Strategy and test coverage.
+- [Security](docs/SECURITY.md): Threat model and limits.

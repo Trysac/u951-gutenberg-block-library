@@ -1,31 +1,14 @@
 # Architecture
 
-## Purpose
+## Overview
 
-`trysac/u951-gutenberg-block-library` is a small, dependency-free PHP library: Accessible server-rendered Gutenberg blocks with a WordPress block-grammar parser and serializer, attribute validation and markup that passes axe-core with zero violations
+This library implements a server-side core for Gutenberg dynamic blocks, providing a parser and serializer for the WordPress block grammar.
 
-## Shape
+## Components
 
-```text
-caller code --> namespace Trysac\GutenbergBlockLibrary (src/, PSR-4)
-                    |
-                    +-- final classes with static, pure functions; no I/O, no global mutable state
-                    +-- @internal helpers (optional)
-```
-
-- **Public API**: every public class, method, constant and property under `src/` that is not
-  marked `@internal`. Internal helpers may change without a major version.
-- **Errors**: invalid input throws an `\InvalidArgumentException` subclass of the library (such as
-  `BlankInputException`) documented with `@throws`. The library never echoes, exits or changes
-  global state (ini settings, error handlers, the locale).
-- **Side effects**: none. If a feature needs I/O, accept a stream resource, a string or a small
-  interface instead of opening resources, and record the choice in an ADR.
-
-## Quality contract
-
-`scripts/check.php` is the single definition of the gates; `fabrica.json` tells the factory and CI
-how to run it. See [TESTING.md](TESTING.md).
-
-## Decisions
-
-Architecture decisions are recorded in [decisions/](decisions/) as numbered ADRs.
+1. **`BlockParser` and `ParsedBlock`**: Tokenizes and parses WordPress block comments into an immutable tree structure. Enforces limits on input size and nesting depth.
+2. **`BlockSerializer`**: Reconstructs serialized WordPress block comment markup from `ParsedBlock` trees.
+3. **`Registry`**: Manages block metadata and `block.json` (API version 3) schemas, enforcing strict attribute validation.
+4. **`Renderer`**: Generates deterministic HTML, handling per-instance ARIA IDs (`trysac-<block>-<n>`) and rendering compliant HTML based on validated attributes.
+5. **`Html`**: Provides secure escaping for text and attributes.
+6. **`Cli`**: Enables rendering serialized block files from the command line.
